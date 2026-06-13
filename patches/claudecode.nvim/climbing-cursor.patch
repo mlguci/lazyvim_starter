@@ -1,0 +1,19 @@
+diff --git a/lua/claudecode/terminal/snacks.lua b/lua/claudecode/terminal/snacks.lua
+index 1adf12e..6a16f27 100644
+--- a/lua/claudecode/terminal/snacks.lua
++++ b/lua/claudecode/terminal/snacks.lua
+@@ -299,6 +299,14 @@ local function cc_show(term, focus, config)
+   -- Set term.win before nvim_win_set_buf so Snacks' fixbuf BufWinEnter autocmd
+   -- (if still registered) sees a valid window and does not self-delete.
+   term.win = new_win
++  -- Apply the Snacks window options BEFORE attaching the terminal buffer. The
++  -- fresh split inherits the source window's decorations (number/signcolumn/
++  -- statuscolumn); attaching the terminal while those are active resizes the
++  -- pty a few columns narrower, and re-applying minimal options afterwards
++  -- resizes it back. That width bounce makes Claude (Ink) reflow and leaves
++  -- its cursor anchor one row off -- the same climbing-cursor symptom this
++  -- recreate path exists to avoid.
++  reapply_snacks_window_state(term, new_win)
+   vim.api.nvim_win_set_buf(new_win, term.buf)
+   if not horizontal then
+     vim.api.nvim_win_set_height(new_win, vim.o.lines) -- full height for vertical splits, like native

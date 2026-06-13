@@ -15,9 +15,11 @@ return {
     version = "*",
     -- Override LazyVim's <C-/> (Snacks terminal) with toggleterm float.
     -- Most terminals send <C-/> as <C-_>, so bind both.
+    -- Terminal-mode mappings are set buffer-locally in the TermOpen autocmd
+    -- below, so <C-/> doesn't close other terminals (e.g. the Claude window).
     keys = {
-      { "<C-/>", "<Cmd>ToggleTerm direction=float<CR>", mode = { "n", "t" }, desc = "Toggle Terminal (float)" },
-      { "<C-_>", "<Cmd>ToggleTerm direction=float<CR>", mode = { "n", "t" }, desc = "which_key_ignore" },
+      { "<C-/>", "<Cmd>ToggleTerm direction=float<CR>", mode = "n", desc = "Toggle Terminal (float)" },
+      { "<C-_>", "<Cmd>ToggleTerm direction=float<CR>", mode = "n", desc = "which_key_ignore" },
     },
     opts = {
       size = function(term)
@@ -30,7 +32,7 @@ return {
       direction = "float",
       open_mapping = [[<C-_>]],
       insert_mappings = true,
-      terminal_mappings = true,
+      terminal_mappings = false,
     },
     config = function(_, opts)
       require("toggleterm").setup(opts)
@@ -39,8 +41,10 @@ return {
         pattern = "term://*toggleterm#*",
         callback = function()
           local kopts = { buffer = 0 }
+          vim.keymap.set("t", "<C-/>", [[<Cmd>ToggleTerm<CR>]], kopts)
+          vim.keymap.set("t", "<C-_>", [[<Cmd>ToggleTerm<CR>]], kopts)
           vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], kopts)
-          vim.keymap.set("t", "jj", [[<C-\><C-n>]], kopts)
+          vim.keymap.set("t", "jj", [[<Cmd>ToggleTerm<CR>]], kopts)
           vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], kopts)
           vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], kopts)
           vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], kopts)
