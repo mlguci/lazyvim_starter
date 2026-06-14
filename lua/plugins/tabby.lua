@@ -7,6 +7,11 @@ return {
     "nanozuki/tabby.nvim",
     event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    keys = {
+      -- tabby replaces bufferline, so <S-h>/<S-l> drive Vim tabpages now.
+      { "<S-l>", "<cmd>tabnext<cr>", desc = "Next Tab" },
+      { "<S-h>", "<cmd>tabprevious<cr>", desc = "Prev Tab" },
+    },
     init = function()
       -- Always show the tabline, even with a single tab.
       vim.o.showtabline = 2
