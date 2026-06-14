@@ -22,12 +22,7 @@ return {
     name = "catppuccin",
     priority = 1000,
     opts = {
-      flavour = "macchiato", -- latte, frappe, macchiato, mocha
-      dim_inactive = {
-        enabled = true,
-        shade = "dark",
-        percentage = 0.15,
-      },
+      flavour = "mocha", -- latte, frappe, macchiato, mocha
       highlight_overrides = {
         all = function(colors)
           return {
