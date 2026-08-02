@@ -22,7 +22,7 @@ return {
     name = "catppuccin",
     priority = 1000,
     opts = {
-      flavour = "mocha", -- latte, frappe, macchiato, mocha
+      flavour = "frappe", -- latte, frappe, macchiato, mocha
       highlight_overrides = {
         all = function(colors)
           return {
@@ -36,7 +36,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "catppuccin",
+      colorscheme = function() end,
     },
   },
 }

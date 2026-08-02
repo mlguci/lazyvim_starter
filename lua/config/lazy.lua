@@ -51,3 +51,10 @@ require("lazy").setup({
     },
   },
 })
+
+if not (vim.uv or vim.loop).fs_stat(vim.g.base46_cache) then
+  require("base46").compile()
+end
+for _, v in ipairs(vim.fn.readdir(vim.g.base46_cache)) do
+  dofile(vim.g.base46_cache .. v)
+end
